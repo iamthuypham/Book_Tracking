@@ -99,8 +99,26 @@ body, .app {
   font-size: 0;
 }
 
+/* search result */
+
 .search-books-results {
   padding: 80px 10px 20px;
+}
+
+.search-result-message {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-size: 3em;
+  color: black;
+   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+   -webkit-text-stroke-width: 0.7px;
+   -webkit-text-stroke-color: black;
+  background-image: url('./icons/books.jpg');
+  background-repeat: no-repeat;
+  background-size: cover
 }
 
 /* books grid */
