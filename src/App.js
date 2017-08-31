@@ -4,35 +4,41 @@ import * as BooksAPI from './BooksAPI'
 import ListBooksContent   from './ListBooksContent'
 import './App.css'
 
-let shelves = {"Currently Reading": [], "Want To Read": [], "Read": []}
-
 class BooksApp extends React.Component {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    books: [],
-    showSearchPage: true
+   constructor(props) {
+    super(props);
+    this.state = { 
+      books: [],
+      showSearchPage: true };
+    this.moveBook = this.moveBook.bind(this);
   }
+  
+  moveBook(updatedBook, e) {
+    e.preventDefault()
+    const newShelf = e.target.value
+    // update the book from database
+    BooksAPI.update(updatedBook, newShelf)
+    // update the state of books
+    this.setState(prevState => {
+      // find the book, from prevState books list, that user want to move
+      for (const bookFromPrevState of Array.from(prevState["books"])) {
+        if (bookFromPrevState.id == updatedBook.id) {
+          // change shelf value of the book, from prevState books list
+          bookFromPrevState.shelf = newShelf
+        }
+      }
+    })
+  }
+  
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
+      console.log(this.state.books)
     })
   }
 
   render() {
-    for (const book of this.state.books) {
-      if (book.shelf === "currentlyReading") {
-        shelves["Currently Reading"].push(book);
-      } else if (book.shelf === "wantToRead") {
-        shelves["Want To Read"].push(book);
-      } else {
-        shelves["Read"].push(book);
-      }
-    }
+    const { books } = this.state
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -41,9 +47,39 @@ class BooksApp extends React.Component {
               <h1>Book Tracker</h1>
             </div>
             <div className="list-books-content">
-              { Object.keys(shelves).map((shelfName) => {
-                return <ListBooksContent key={shelfName} shelf={shelfName} books={shelves[shelfName]} />
-              })}
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Currently Reading</h2>
+                <div className="bookshelf-books">
+                  <ol className="books-grid">
+                    { books.map((book) => (
+                      book.shelf == "currentlyReading" &&
+                        <ListBooksContent key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Want To Read</h2>
+                <div className="bookshelf-books">
+                  <ol className="books-grid">
+                    { books.map((book) => (
+                      book.shelf == "wantToRead" &&
+                        <ListBooksContent key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Read</h2>
+                <div className="bookshelf-books">
+                  <ol className="books-grid">
+                    { books.map((book) => (
+                      book.shelf == "read" &&
+                        <ListBooksContent key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
+                    ))}
+                  </ol>
+                </div>
+              </div>
             </div>
             <div className="open-search">
               <Link to="/search" onClick={() => this.setState({ showSearchPage: true })}>Add a book</Link>
