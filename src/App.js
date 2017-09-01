@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
-import { CSSTransitionGroup } from 'react-transition-group' // ES66SE
+import { CSSTransitionGroup } from 'react-transition-group'
 
 import * as BooksAPI from './BooksAPI'
 import Book   from './Book'

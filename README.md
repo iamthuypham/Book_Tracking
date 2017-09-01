@@ -1,15 +1,34 @@
 # Book Tracking App
 This app is the React MyReads Project of Udacity React Nanodegree.
 
-## What's Included?
-- [Starter Code for the React MyReads](https://github.com/udacity/reactnd-project-myreads-starter)
-- [Create React App](https://github.com/facebookincubator/create-react-app)
-- 
-
-## Run Application
+## Getting Started
 1. Clone project `git clone git@github.com:iamthuypham/Udacity_Book_Tracking.git`
 2. Install `npm install`
 3. Launch `npm start`
+
+## Built With
+- [Starter Code for the React MyReads](https://github.com/udacity/reactnd-project-myreads-starter) - Udacity MyReads Project Starter Code
+- [Create React App](https://github.com/facebookincubator/create-react-app)
+- [React Transition Group](https://github.com/reactjs/react-transition-group) - Animation
+- [CSS Star Rating](https://github.com/BioPhoton/css-star-rating) - Rating CSS
+
+## What's Included
+- Users can view 3 shelves of books: Currently Reading, Want to read, and Read.
+- Users can move a book from one shelf to another. Books are updated immediately.
+- Users can click on "+" button to navigate to `/search` page
+- Users can click on Back app or Back broswer button to navigate to `/` main page with updated books
+- Users can search different books by title, author, or [search terms](SEARCH_TERMS.md)
+
+## React Components Structure
+```
+└── [BooksApp](App.js)
+     ├── <Route path="/">
+     │      └── <CSSTransitionGroup>
+     │              └── [Book](Book.js)
+     └── <Route "/search">
+            └── <CSSTransitionGroup>
+                    └── [Book](Book.js)
+```
 
 ## Project Structure
 ```
