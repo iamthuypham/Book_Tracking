@@ -1,5 +1,7 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+import { CSSTransitionGroup } from 'react-transition-group' // ES66SE
+
 import * as BooksAPI from './BooksAPI'
 import Book   from './Book'
 import sortBy from 'sort-by'
@@ -17,6 +19,11 @@ class BooksApp extends React.Component {
     this.moveBook = this.moveBook.bind(this);
   }
   
+  /**
+  * @description Move a book from one shelf to another
+  * @param {object} updatedBook
+  * @param {obejct} e
+  */
   moveBook = (updatedBook, e) => {
     e.preventDefault()
     const newShelf = e.target.value
@@ -34,6 +41,10 @@ class BooksApp extends React.Component {
     })
   }
   
+  /**
+  * @description Update query as long as users input
+  * @param {string} query
+  */
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
     if (query) {
@@ -52,14 +63,18 @@ class BooksApp extends React.Component {
     }
   }
   
-  // reset state books when users click Search button
+  /**
+  * @description Clear query when users click Search button
+  */
   clearQuery = () => {
     this.setState({ query: '', books: [], resultMessage: '+10,000 free books.' })
   }
   
-  // reset state and refresh books when users click Back App button
+  /**
+  * @description reset state and refresh books when users click Back App button
+  */ 
   refreshBooks = () => {
-    this.clearQuery
+    this.clearQuery()
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
@@ -73,9 +88,10 @@ class BooksApp extends React.Component {
     window.onpopstate = this.onBackButtonEvent
   }
   
-  // refresh books when users click Back Browser button
+  /**
+  * @description refresh books when users click Back Browser button
+  */ 
   onBackButtonEvent = (e) => { 
-    console.log('on back')
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
@@ -84,6 +100,7 @@ class BooksApp extends React.Component {
   render() {
     const { books, query, resultMessage } = this.state
     books.sort(sortBy('title'))
+    console.log(books)
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -95,34 +112,46 @@ class BooksApp extends React.Component {
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Currently Reading</h2>
                 <div className="bookshelf-books">
-                  <ol className="books-grid">
+                  <CSSTransitionGroup
+                    className="books-grid"
+                    transitionName="fadeBook"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={500}>
                     { books.map((book) => (
                       book.shelf === "currentlyReading" &&
                         <Book key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
                     ))}
-                  </ol>
+                  </CSSTransitionGroup>
                 </div>
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Want To Read</h2>
                 <div className="bookshelf-books">
-                  <ol className="books-grid">
+                  <CSSTransitionGroup
+                    className="books-grid"
+                    transitionName="fadeBook"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={500}>
                     { books.map((book) => (
                       book.shelf === "wantToRead" &&
                         <Book key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
                     ))}
-                  </ol>
+                  </CSSTransitionGroup>
                 </div>
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Read</h2>
                 <div className="bookshelf-books">
-                  <ol className="books-grid">
+                  <CSSTransitionGroup
+                    className="books-grid"
+                    transitionName="fadeBook"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={500}>
                     { books.map((book) => (
                       book.shelf === "read" &&
                         <Book key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
                     ))}
-                  </ol>
+                  </CSSTransitionGroup>
                 </div>
               </div>
             </div>
@@ -158,11 +187,15 @@ class BooksApp extends React.Component {
                 
               ) : (
                 <div className="search-books-results">  
-                  <ol className="books-grid">
+                  <CSSTransitionGroup
+                    className="books-grid"
+                    transitionName="fadeBook"
+                    transitionEnterTimeout={600}
+                    transitionLeaveTimeout={300}>
                     { books.map((book) => (
                       <Book key={book.id} bookOfCurrentShelf={book} onChange={this.moveBook}/>
                     ))}
-                  </ol>
+                  </CSSTransitionGroup>
                 </div>  
               )}
             
