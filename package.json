@@ -9,6 +9,9 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.6.0",
+    "eslint-plugin-react": "^7.3.0",
     "react-scripts": "0.9.5"
   },
   "scripts": {

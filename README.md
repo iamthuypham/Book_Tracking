@@ -23,11 +23,14 @@ This app is the React MyReads Project of Udacity React Nanodegree.
 ```
 └── [BooksApp](App.js)
      ├── <Route path="/">
-     │      └── <CSSTransitionGroup>
-     │              └── [Book](Book.js)
+     │      └── <ListBooks>
+     │              └── <ShelfListBooks>
+     │                        └── <CSSTransitionGroup>
+     │                                  └── [Book]
      └── <Route "/search">
-            └── <CSSTransitionGroup>
-                    └── [Book](Book.js)
+            └── <SearchBooks> 
+                    └── <CSSTransitionGroup>
+                              └── [Book]
 ```
 
 ## Project Structure
